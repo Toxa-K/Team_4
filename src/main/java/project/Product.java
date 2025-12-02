@@ -25,7 +25,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "name=" + name + ", price=" + price + ", quantity=" + quantity + '}';
+        return "Продукт{" + "наименование=" + name + ", цена=" + price + ", количество=" + quantity + '}';
     }
 
     public static class ProductBuilder {
@@ -35,7 +35,7 @@ public class Product {
 
         public ProductBuilder setName(String name) {
             if (name == null || name.trim().isEmpty()) {
-                throw new IllegalArgumentException("Name cannot be null or empty");
+                throw new IllegalArgumentException("Наименование не может быть пустым");
             }
             this.name = name;
             return this;
@@ -43,7 +43,7 @@ public class Product {
 
         public ProductBuilder setPrice(double price) {
             if (price < 0) {
-                throw new IllegalArgumentException("Price cannot be negative");
+                throw new IllegalArgumentException("Цена не может быть отрицательной");
             }
             this.price = price;
             return this;
@@ -51,7 +51,7 @@ public class Product {
 
         public ProductBuilder setQuantity(int quantity) {
             if (quantity < 0) {
-                throw new IllegalArgumentException("Quantity cannot be negative");
+                throw new IllegalArgumentException("Количество не может быть отрицательным");
             }
             this.quantity = quantity;
             return this;
