@@ -8,24 +8,28 @@ import java.util.List;
 
 public class ProductFileLoader {
 
-    public List<Product> loadFromFile(String fileName) {
+    public List<Product> loadFromFile(String fileName, int numOfLines) {
         List<Product> products = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             int lineNumber = 1;
 
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null && products.size() < numOfLines) {
                 try {
                     Product product = parseLine(line);
                     products.add(product);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Ошибка парсинга строки под номером " + lineNumber + " : " + e.getMessage());
+                    System.out.println("Ошибка парсинга строки под номером " + lineNumber + ": " + e.getMessage());
                 }
                 lineNumber++;
             }
         } catch (IOException e) {
-            System.out.println("Ошибка из чтения файла: " + e.getMessage());
+            System.out.println("Ошибка чтения файла: " + e.getMessage());
+        }
+
+        if (products.size() < numOfLines) {
+            System.out.println("В файле меньше строк, чем ожидал пользователь: " + products.size());
         }
         return products;
     }
