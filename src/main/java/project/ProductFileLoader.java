@@ -16,6 +16,12 @@ public class ProductFileLoader {
             int lineNumber = 1;
 
             while ((line = reader.readLine()) != null && products.size() < numOfLines) {
+                line = line.trim();
+                if (line.isEmpty()) {
+                    lineNumber++;
+                    continue;
+                }
+
                 try {
                     Product product = parseLine(line);
                     products.add(product);
@@ -28,10 +34,14 @@ public class ProductFileLoader {
             System.out.println("Ошибка чтения файла: " + e.getMessage());
         }
 
-        if (products.size() < numOfLines) {
+        if (products.size() < numOfLines && numOfLines != Integer.MAX_VALUE) {
             System.out.println("В файле меньше строк, чем ожидал пользователь: " + products.size());
         }
         return products;
+    }
+
+    public List<Product> loadFromFile(String fileName) {
+        return loadFromFile(fileName, Integer.MAX_VALUE);
     }
 
     private Product parseLine(String line) {
