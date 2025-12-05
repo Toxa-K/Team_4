@@ -3,12 +3,62 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ProductSorter {
-    private static final Comparator<Product> PRODUCT_COMPARATOR =
-            Comparator.comparing(Product::getName)
-                    .thenComparingDouble(Product::getPrice)
-                    .thenComparingInt(Product::getQuantity);
+    // Сортировка по Name.
+    public static void sortByName(Product[] products) {
+        int n = products.length;
+        boolean swapped;
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - 1 - i; j++) {
+                if (products[j].getName().compareTo(products[j + 1].getName()) > 0) {
+                    Product temp = products[j];
+                    products[j] = products[j + 1];
+                    products[j + 1] = temp;
+                    swapped = true;
+                }
+            }
+            if (!swapped) break;
+        }
+    }
+      //Сортировка по Price.
+    public static void sortByQuantity(Product[] products) {
+        int n = products.length;
+        boolean swapped;
 
-    public static void sort(List<Product> products) {
-        products.sort(PRODUCT_COMPARATOR);
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+
+            for (int j = 0; j < n - 1 - i; j++) {
+                if (products[j].getPrice() > products[j + 1].getPrice()) {
+                    Product temp = products[j];
+                    products[j] = products[j + 1];
+                    products[j + 1] = temp;
+                    swapped = true;
+                }
+            }
+            if (!swapped) break;
+
+
+        }
+    }
+
+    // Сортировка по quantity.
+    public static void sortByQuantity(Product[] products) {
+        int n = products.length;
+        boolean swapped;
+
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+
+            for (int j = 0; j < n - 1 - i; j++) {
+                if (products[j].getQuantity() > products[j + 1].getQuantity()) {
+                    Product temp = products[j];
+                    products[j] = products[j + 1];
+                    products[j + 1] = temp;
+                    swapped = true;
+                }
+            }
+            if (!swapped) break;
+        }
     }
 }
