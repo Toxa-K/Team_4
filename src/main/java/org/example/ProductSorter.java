@@ -24,10 +24,8 @@ public class ProductSorter {
     public static void sortByQuantity(Product[] products) {
         int n = products.length;
         boolean swapped;
-
         for (int i = 0; i < n - 1; i++) {
             swapped = false;
-
             for (int j = 0; j < n - 1 - i; j++) {
                 if (products[j].getPrice() > products[j + 1].getPrice()) {
                     Product temp = products[j];
@@ -37,19 +35,14 @@ public class ProductSorter {
                 }
             }
             if (!swapped) break;
-
-
         }
     }
-
     // Сортировка по quantity.
     public static void sortByQuantity(Product[] products) {
         int n = products.length;
         boolean swapped;
-
         for (int i = 0; i < n - 1; i++) {
             swapped = false;
-
             for (int j = 0; j < n - 1 - i; j++) {
                 if (products[j].getQuantity() > products[j + 1].getQuantity()) {
                     Product temp = products[j];
