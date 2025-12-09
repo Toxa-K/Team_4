@@ -1,8 +1,10 @@
 package project;
 
+
 import Strategy.InputStrategy;
 import Strategy.ManualInputStrategy;
 import Strategy.RandomInputStrategy;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +75,7 @@ public class MenuManager {
         int choice = scanner.nextInt();
         scanner.nextLine();
 
+
         InputStrategy strategy = null;
 
         //if (choice == 4) return;
@@ -80,11 +83,13 @@ public class MenuManager {
         switch (choice) {
             case 1:
                 System.out.println("В разработке"+"Cлучайная генерация");
+
                 strategy = new RandomInputStrategy(scanner);
                 break;
             case 2:
                 System.out.println("В разработке"+"Ввести вручную");
                 strategy = new ManualInputStrategy(scanner);
+
                 break;
             case 3:
                 System.out.println("Загрузить из файла");
@@ -96,7 +101,9 @@ public class MenuManager {
                 System.out.println("Неверный ввод. Выберите один из предложенных вариантов.");
                 break;
         }
+
         productList = strategy.load();
+
         System.out.println("Данные загружены успешно");
     }
 
