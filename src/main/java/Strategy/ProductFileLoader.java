@@ -1,4 +1,6 @@
-package project;
+package Strategy;
+
+import project.Product;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,7 +8,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductFileLoader {
+public class ProductFileLoader implements InputStrategy {
+
+    private final String fileName;
+    private final int numOfLines;
+
+    public ProductFileLoader(String fileName, int numOfLines) {
+        this.fileName = fileName;
+        this.numOfLines = numOfLines == 0 ? Integer.MAX_VALUE : numOfLines;
+    }
+
 
     public List<Product> loadFromFile(String fileName, int numOfLines) {
         List<Product> products = new ArrayList<>();
@@ -40,8 +51,9 @@ public class ProductFileLoader {
         return products;
     }
 
-    public List<Product> loadFromFile(String fileName) {
-        return loadFromFile(fileName, Integer.MAX_VALUE);
+    @Override
+    public List<Product> load() {
+        return loadFromFile(fileName, numOfLines);
     }
 
     private Product parseLine(String line) {

@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ManualInputStrategy implements InputStrategy
-{
+public class ManualInputStrategy implements InputStrategy{
     private final Scanner scanner;
 
     public ManualInputStrategy(Scanner scanner) {
