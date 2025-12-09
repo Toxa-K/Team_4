@@ -1,11 +1,9 @@
 package project;
 
 
-import Strategy.InputStrategy;
 import Strategy.ManualInputStrategy;
+import Strategy.ProductFileLoader;
 import Strategy.RandomInputStrategy;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -57,7 +55,6 @@ public class MenuManager {
         int choice = scanner.nextInt();
         scanner.nextLine();
         //SortingStrategy strategy;
-
         switch (choice) {
             case 1:
                 System.out.println("В разработке");
@@ -68,32 +65,23 @@ public class MenuManager {
         }
     }
 
-
     private void loadDataMenu(){
         showLoadDataMenu();
-
         int choice = scanner.nextInt();
         scanner.nextLine();
 
-
-        InputStrategy strategy = null;
-
-        //if (choice == 4) return;
-
         switch (choice) {
             case 1:
-                System.out.println("В разработке"+"Cлучайная генерация");
-
-                strategy = new RandomInputStrategy(scanner);
+                System.out.println("Cлучайная генерация");
+                productList = new RandomInputStrategy(scanner).load();
                 break;
             case 2:
-                System.out.println("В разработке"+"Ввести вручную");
-                strategy = new ManualInputStrategy(scanner);
-
+                System.out.println("Ввести вручную");
+                productList = new ManualInputStrategy(scanner).load();
                 break;
             case 3:
                 System.out.println("Загрузить из файла");
-                //strategy = new FileInputStrategy(scanner);
+                fileLoadDataMenu();
                 break;
             case 4:
                 return;
@@ -101,15 +89,16 @@ public class MenuManager {
                 System.out.println("Неверный ввод. Выберите один из предложенных вариантов.");
                 break;
         }
-
-        productList = strategy.load();
-
-        System.out.println("Данные загружены успешно");
+        System.out.println("Данные загружены успешно");//Добавить проверку
     }
 
     private void fileLoadDataMenu(){
+
         System.out.println("Введите название файла из которого загрузить данные");
-        //strategy = new FileInput();
+        String fileName = scanner.nextLine();
+        System.out.println("Введите кол-во загружаемых строк \n Если хотите загрузить весь файл введите 0");
+        int numOfLines = scanner.nextInt();
+        productList = new ProductFileLoader(fileName, numOfLines).load();
     }
 
     private void printData() {
@@ -117,14 +106,12 @@ public class MenuManager {
             System.out.println("Нет данных для отображения. Загрузите данные сначала.");
             return;
         }
-
         System.out.println("\nИмеющиеся данные");
         System.out.println("Количество записей: " + productList.size());
         for (int i = 0; i < productList.size(); i++) {
             System.out.println((i + 1) + ". " + productList.get(i));
         }
     }
-
 
     private void showSortingMenu(){
         System.out.println("\nМеню сортировки.");
@@ -149,5 +136,4 @@ public class MenuManager {
         System.out.println("4. Назад");
         System.out.print("Выберите пункт: ");
     }
-
 }
