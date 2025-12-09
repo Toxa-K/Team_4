@@ -1,5 +1,6 @@
 package project;
 
+//import Strategy.InputStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -68,27 +69,29 @@ public class MenuManager {
 
         int choice = scanner.nextInt();
         scanner.nextLine();
-        //InputStrategy strategy;
+        //InputStrategy strategy = null;
 
         if (choice == 4) return;
 
         switch (choice) {
             case 1:
                 System.out.println("В разработке"+"Cлучайная генерация");
-                //strategy = new Random()
+                //strategy = new RandomInputStrategy(scanner);
                 break;
             case 2:
                 System.out.println("В разработке"+"Ввести вручную");
-                //strategy = new ManualInput()
+                //strategy = new ManualInputStrategy(scanner);
                 break;
             case 3:
                 System.out.println("Загрузить из файла");
-
+                //strategy = new FileInputStrategy(scanner);
                 break;
             default:
                 System.out.println("Неверный ввод. Выберите один из предложенных выриантов.");
                 break;
         }
+        //productList = strategy.load();
+        System.out.println("Данные загружены успешно");
     }
     private void fileLoadDataMenu(){
         System.out.println("Введите название файла из которого загрузить данные");
