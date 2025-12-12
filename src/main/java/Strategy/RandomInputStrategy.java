@@ -1,6 +1,7 @@
 package Strategy;
 
 import project.Product;
+import project.RandomProductName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +26,24 @@ public class RandomInputStrategy implements InputStrategy {
         List<Product> productsList = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
+            String nameProduct = RandomProductName.getRandomProduct();
+
+            if(random.nextDouble() < 0.3) {
+                nameProduct = nameProduct + " " + (random.nextInt(900)+100);
+            }
+            double price = 10.0 + random.nextDouble() * 490.0;
+            price = Math.round(price*100.0) / 100.0;
+
+            int quantity = random.nextInt(201);
+
             Product product = new Product.ProductBuilder()
-                    .setName("Product_" + i)
-                    .setPrice(random.nextDouble(1000))
-                    .setQuantity(random.nextInt(100))
+                    .setName(nameProduct)
+                    .setPrice(price)
+                    .setQuantity(quantity)
                     .build();
 
             productsList.add(product);
         }
-
         return productsList;
     }
 }

@@ -1,6 +1,7 @@
 package project;
 
 
+import Strategy.InputStrategy;
 import Strategy.ManualInputStrategy;
 import Strategy.ProductFileLoader;
 import Strategy.RandomInputStrategy;
@@ -73,11 +74,13 @@ public class MenuManager {
         switch (choice) {
             case 1:
                 System.out.println("Cлучайная генерация");
-                productList = new RandomInputStrategy(scanner).load();
+                List<Product> generatedProductList = new RandomInputStrategy(scanner).load();
+                mergeData(generatedProductList);
                 break;
             case 2:
                 System.out.println("Ввести вручную");
-                productList = new ManualInputStrategy(scanner).load();
+                List<Product> manualProductList = new ManualInputStrategy(scanner).load();
+                mergeData(manualProductList);
                 break;
             case 3:
                 System.out.println("Загрузить из файла");
@@ -101,6 +104,43 @@ public class MenuManager {
         productList = new ProductFileLoader(fileName, numOfLines).load();
     }
 
+    private void mergeData (List<Product> generatedProductList){
+        if (generatedProductList == null || generatedProductList.isEmpty()) {
+            System.out.println("Нет новых данных.");
+            return;
+        }
+
+        if (productList == null || productList.isEmpty()) {
+            productList = generatedProductList;
+            System.out.println("Заполнили пустой список данными");
+            return;
+        }
+        showAskAboutExistingDataMenu();
+        int mergeChoice;
+
+        try {
+            mergeChoice = scanner.nextInt();
+            scanner.nextLine();
+            switch (mergeChoice){
+                case 1:
+                    productList = generatedProductList;
+                    System.out.println("Текущие данные заменены");
+                    break;
+                case 2:
+                    productList.addAll(generatedProductList);
+                    System.out.println("Новые данные добавлены в список. Всего записей " + productList.size());
+                    break;
+                default:
+                    System.out.println("Отмена загрузки");
+            }
+        }
+        catch (Exception invalidInput){
+            scanner.nextLine();
+            System.out.println("Некорректный ввод");
+
+        }
+    }
+
     private void printData() {
         if ( productList == null || productList.isEmpty()) {
             System.out.println("Нет данных для отображения. Загрузите данные сначала.");
@@ -108,6 +148,7 @@ public class MenuManager {
         }
         System.out.println("\nИмеющиеся данные");
         System.out.println("Количество записей: " + productList.size());
+
         for (int i = 0; i < productList.size(); i++) {
             System.out.println((i + 1) + ". " + productList.get(i));
         }
@@ -134,6 +175,14 @@ public class MenuManager {
         System.out.println("2. Ввести вручную");
         System.out.println("3. Загрузить из файла");
         System.out.println("4. Назад");
+        System.out.print("Выберите пункт: ");
+    }
+
+    private  void showAskAboutExistingDataMenu(){
+        System.out.println("У вас уже есть загруженные данные (" + productList.size() + " записей).");
+        System.out.println("1) Заменить текущие данные новыми");
+        System.out.println("2) Дописать новые данные к текущим");
+        System.out.println("3) Отмена");
         System.out.print("Выберите пункт: ");
     }
 }
