@@ -1,0 +1,10 @@
+Apple;1.5;10
+Banana;0.8;20
+Orange;abc;5           
+;2.5;15                
+Grapes;3.0;-5          
+Pineapple;5.5;12
+Mango;;8               
+Peach;2.0;xyz          
+Kiwi;1.2;             
+; ;      

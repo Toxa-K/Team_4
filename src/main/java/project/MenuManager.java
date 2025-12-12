@@ -89,14 +89,18 @@ public class MenuManager {
                 System.out.println("Неверный ввод. Выберите один из предложенных вариантов.");
                 break;
         }
-        System.out.println("Данные загружены успешно");//Добавить проверку
+        if (productList.isEmpty()) {
+            System.out.println("Не удалось загрузить данные из файла");
+        } else {
+            System.out.println("Данные загружены успешно");//Добавить проверку
+        }
     }
 
     private void fileLoadDataMenu(){
 
         System.out.println("Введите название файла из которого загрузить данные");
         String fileName = scanner.nextLine();
-        System.out.println("Введите кол-во загружаемых строк \n Если хотите загрузить весь файл введите 0");
+        System.out.println("Введите кол-во загружаемых строк \nЕсли хотите загрузить весь файл введите 0");
         int numOfLines = scanner.nextInt();
         productList = new ProductFileLoader(fileName, numOfLines).load();
     }
