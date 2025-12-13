@@ -1,7 +1,8 @@
-package Strategy;
+package InputStrategy;
 
+import org.inputstrategy.ProductFileLoader;
 import org.junit.jupiter.api.*;
-import project.Product;
+import org.project.Product;
 
 import java.util.*;
 import java.io.*;

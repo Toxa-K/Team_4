@@ -1,6 +1,6 @@
-package Strategy;
+package org.inputstrategy;
 
-import project.Product;
+import org.project.Product;
 
 import java.io.*;
 import java.util.*;

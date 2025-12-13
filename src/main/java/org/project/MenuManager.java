@@ -1,10 +1,16 @@
-package project;
+package org.project;
 
 
-import Strategy.ManualInputStrategy;
-import Strategy.ProductFileLoader;
-import Strategy.RandomInputStrategy;
+import org.inputstrategy.ManualInputStrategy;
+import org.inputstrategy.ProductFileLoader;
+import org.inputstrategy.RandomInputStrategy;
+import org.sortstrategy.BubbleSort;
+import org.sortstrategy.SelectionSort;
+import org.sortstrategy.ShellSort;
+import org.sortstrategy.SortContext;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -51,13 +57,36 @@ public class MenuManager {
 
     private void sortingMenu() {
         showSortingMenu();
-
         int choice = scanner.nextInt();
         scanner.nextLine();
-        //SortingStrategy strategy;
+        SortContext context = new SortContext();
+        Product[] array = productList.toArray(new Product[0]);
         switch (choice) {
             case 1:
-                System.out.println("В разработке");
+                System.out.println("Bubble sort");
+                context.setStrategy(new BubbleSort());
+                context.execute(array);
+                productList = new ArrayList<>(Arrays.asList(array));
+                break;
+            case 2:
+                System.out.println("Selection Sort .. Доработка");
+                context.setStrategy(new SelectionSort());
+                context.execute(array);
+                productList = new ArrayList<>(Arrays.asList(array));
+                break;
+            case 3:
+                System.out.println("Shell Sort .. Доработка");
+                context.setStrategy(new ShellSort());
+                context.execute(array);
+                productList = new ArrayList<>(Arrays.asList(array));
+                break;
+            case 4:
+                System.out.println("Базовая сортировка.. разработка");
+                /*context.setStrategy(new BaseSort());
+                context.execute(array);
+                productList = new ArrayList<>(Arrays.asList(array));*/
+                break;
+            case 5:
                 return;
             default:
                 System.out.println("Неверный ввод. Выберите один из предложенных выриантов.");
@@ -92,7 +121,7 @@ public class MenuManager {
         if (productList.isEmpty()) {
             System.out.println("Не удалось загрузить данные из файла");
         } else {
-            System.out.println("Данные загружены успешно");//Добавить проверку
+            System.out.println("Данные загружены успешно");
         }
     }
 
@@ -119,7 +148,11 @@ public class MenuManager {
 
     private void showSortingMenu(){
         System.out.println("\nМеню сортировки.");
-        System.out.println("1. Выход");
+        System.out.println("1. Bubble sort");
+        System.out.println("2. Selection Sort");
+        System.out.println("3. Shell Sort");
+        System.out.println("4. Базовая сортировка");
+        System.out.println("5. Выход");
         System.out.print("Выберите пункт: ");
     }
     private void showMainMenu(){

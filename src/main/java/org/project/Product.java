@@ -1,4 +1,4 @@
-package project;
+package org.project;
 
 public class Product {
     private final String name;
