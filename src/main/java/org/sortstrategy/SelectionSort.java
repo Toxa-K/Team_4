@@ -1,4 +1,6 @@
-package org.example;
+package org.sortstrategy;
+
+import org.project.Product;
 
 public class SelectionSort implements SortStrategy {
 

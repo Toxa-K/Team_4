@@ -1,9 +1,6 @@
 package org.example;
 
-import project.MenuManager;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import org.project.MenuManager;
 
 public class Main {
     public static void main(String[] args)
