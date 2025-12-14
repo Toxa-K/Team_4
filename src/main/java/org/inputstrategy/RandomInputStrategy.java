@@ -1,7 +1,7 @@
-package Strategy;
+package org.inputstrategy;
 
-import project.Product;
-import project.RandomProductName;
+import org.project.Product;
+import org.project.RandomProductName;
 
 import java.util.ArrayList;
 import java.util.List;
