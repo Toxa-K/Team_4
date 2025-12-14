@@ -4,6 +4,7 @@ package org.project;
 import org.inputstrategy.ManualInputStrategy;
 import org.inputstrategy.ProductFileLoader;
 import org.inputstrategy.RandomInputStrategy;
+import org.outputstrategy.ProductFileWriter;
 import org.sortstrategy.BubbleSort;
 import org.sortstrategy.SelectionSort;
 import org.sortstrategy.ShellSort;
@@ -22,6 +23,7 @@ public class MenuManager {
         this.scanner = new Scanner(System.in);
         this.productList = new ArrayList<>();
     }
+
     public void start() {
         boolean isRunning = true;
         while (isRunning) {
@@ -35,7 +37,7 @@ public class MenuManager {
                     loadDataMenu();
                     break;
                 case 2:
-                    System.out.println("В разработке"+"Сортровка данных");
+                    System.out.println("В разработке" + "Сортровка данных");
                     sortingMenu();
                     break;
                 case 3:
@@ -43,7 +45,8 @@ public class MenuManager {
                     printData();
                     break;
                 case 4:
-                    System.out.println("В разработке"+"Записать данные в файл");
+                    System.out.println("Записать данные в файл");
+                    fileWriterDataMenu();
                     break;
                 case 5:
                     isRunning = false;
@@ -94,7 +97,7 @@ public class MenuManager {
         }
     }
 
-    private void loadDataMenu(){
+    private void loadDataMenu() {
         showLoadDataMenu();
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -125,17 +128,18 @@ public class MenuManager {
         }
     }
 
-    private void fileLoadDataMenu(){
-
-        System.out.println("Введите название файла из которого загрузить данные");
+    private void fileLoadDataMenu() {
+        System.out.println("Введите название файла, из которого загрузить данные: ");
         String fileName = scanner.nextLine();
-        System.out.println("Введите кол-во загружаемых строк \nЕсли хотите загрузить весь файл введите 0");
+
+        System.out.println("Введите кол-во загружаемых строк: \nЕсли хотите загрузить весь файл введите 0");
         int numOfLines = scanner.nextInt();
+
         productList = new ProductFileLoader(fileName, numOfLines).load();
     }
 
     private void printData() {
-        if ( productList == null || productList.isEmpty()) {
+        if (productList == null || productList.isEmpty()) {
             System.out.println("Нет данных для отображения. Загрузите данные сначала.");
             return;
         }
@@ -146,7 +150,21 @@ public class MenuManager {
         }
     }
 
-    private void showSortingMenu(){
+    private void fileWriterDataMenu() {
+        if (productList == null || productList.isEmpty()) {
+            System.out.println("Нет данных для записи в файл. Загрузите данные сначала.");
+            return;
+        }
+
+        System.out.println("Введите название файла, в который хотите загрузить данные: ");
+        String fileName = scanner.nextLine();
+
+        ProductFileWriter writer = new ProductFileWriter();
+        writer.writeToFile(productList, fileName);
+        System.out.println("Данные успешно записаны в файл: " + fileName);
+    }
+
+    private void showSortingMenu() {
         System.out.println("\nМеню сортировки.");
         System.out.println("1. Bubble sort");
         System.out.println("2. Selection Sort");
@@ -155,7 +173,8 @@ public class MenuManager {
         System.out.println("5. Выход");
         System.out.print("Выберите пункт: ");
     }
-    private void showMainMenu(){
+
+    private void showMainMenu() {
         System.out.println("\nГлавное меню.");
         System.out.println("1. Загрузить данные");
         System.out.println("2. Отсортированть данные");

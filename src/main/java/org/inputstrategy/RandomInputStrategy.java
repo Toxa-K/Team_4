@@ -26,8 +26,8 @@ public class RandomInputStrategy implements InputStrategy {
 
         for (int i = 0; i < count; i++) {
             Product product = new Product.ProductBuilder()
-                    .setName("Product_" + i)
-                    .setPrice(random.nextDouble(1000))
+                    .setName("Product_" + (i + 1))
+                    .setPrice(Math.round(random.nextDouble(1000) * 100.0)/100.0)
                     .setQuantity(random.nextInt(100))
                     .build();
 

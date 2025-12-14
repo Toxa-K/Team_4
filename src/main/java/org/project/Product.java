@@ -5,7 +5,7 @@ public class Product {
     private final double price;
     private final int quantity;
 
-    private Product(ProductBuilder builder) {
+    public Product(ProductBuilder builder) {
         this.name = builder.name;
         this.price = builder.price;
         this.quantity = builder.quantity;
