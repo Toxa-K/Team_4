@@ -22,7 +22,18 @@ public enum RandomProductName {
     Картофель,
     Лук,
     Сахар,
-    Соль;
+    Соль,
+    Кефир,
+    Слива,
+    Груша,
+    Перец,
+    Рыба,
+    Горох,
+    Кукуруза,
+    Клубника,
+    Лимонад,
+    Шпроты;
+
 
     private static final Random random = new Random();
     public static String getRandomProduct(){
