@@ -44,6 +44,7 @@ public class RandomInputStrategy implements InputStrategy {
 
             productsList.add(product);
         }
+
         return productsList;
     }
 }
