@@ -1,4 +1,4 @@
-package InputStrategy;
+package outputstrategy;
 
 import org.junit.jupiter.api.*;
 import org.outputstrategy.ProductFileWriter;
@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductFileWriterTest {
@@ -43,12 +44,12 @@ class ProductFileWriterTest {
 
     @Test
     void writeProductToNotEmptyFile() throws IOException {
-        try(PrintWriter printer = new PrintWriter(testFile)) {
+        try (PrintWriter printer = new PrintWriter(testFile)) {
             printer.println("milk;3.0;10");
         }
 
         List<Product> products = List.of(
-            new Product.ProductBuilder().setName("jam").setPrice(2.9).setQuantity(7).build()
+                new Product.ProductBuilder().setName("jam").setPrice(2.9).setQuantity(7).build()
         );
 
         writer.writeToFile(products, testFile);
@@ -72,7 +73,7 @@ class ProductFileWriterTest {
     @Test
     void shouldCreateFileIfNotExist() throws IOException {
         List<Product> products = List.of(
-            new Product.ProductBuilder().setName("jam").setPrice(2.9).setQuantity(7).build()
+                new Product.ProductBuilder().setName("jam").setPrice(2.9).setQuantity(7).build()
         );
 
         writer.writeToFile(products, testFile);

@@ -1,6 +1,5 @@
 package org.project;
 
-
 import org.inputstrategy.InputStrategy;
 import org.inputstrategy.ManualInputStrategy;
 import org.inputstrategy.ProductFileLoader;
@@ -10,6 +9,7 @@ import org.sortstrategy.BubbleSort;
 import org.sortstrategy.SelectionSort;
 import org.sortstrategy.ShellSort;
 import org.sortstrategy.SortContext;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,25 +72,17 @@ public class MenuManager {
                 productList = new ArrayList<>(Arrays.asList(array));
                 break;
             case 2:
-                System.out.println("Selection Sort .. Доработка");
+                System.out.println("Selection Sort");
                 context.setStrategy(new SelectionSort());
                 context.execute(array);
                 productList = new ArrayList<>(Arrays.asList(array));
                 break;
             case 3:
-                System.out.println("Shell Sort .. Доработка");
+                System.out.println("Shell Sort");
                 context.setStrategy(new ShellSort());
                 context.execute(array);
                 productList = new ArrayList<>(Arrays.asList(array));
                 break;
-            case 4:
-                System.out.println("Базовая сортировка.. разработка");
-                /*context.setStrategy(new BaseSort());
-                context.execute(array);
-                productList = new ArrayList<>(Arrays.asList(array));*/
-                break;
-            case 5:
-                return;
             default:
                 System.out.println("Неверный ввод. Выберите один из предложенных выриантов.");
                 break;
@@ -123,6 +115,7 @@ public class MenuManager {
                 System.out.println("Неверный ввод. Выберите один из предложенных вариантов.");
                 break;
         }
+
         if (productList.isEmpty()) {
             System.out.println("Не удалось загрузить данные из файла");
         } else {
@@ -140,7 +133,7 @@ public class MenuManager {
         productList = new ProductFileLoader(fileName, numOfLines).load();
     }
 
-    private void mergeData (List<Product> generatedProductList){
+    private void mergeData(List<Product> generatedProductList) {
         if (generatedProductList == null || generatedProductList.isEmpty()) {
             System.out.println("Нет новых данных.");
             return;
@@ -157,7 +150,7 @@ public class MenuManager {
         try {
             mergeChoice = scanner.nextInt();
             scanner.nextLine();
-            switch (mergeChoice){
+            switch (mergeChoice) {
                 case 1:
                     productList = generatedProductList;
                     System.out.println("Текущие данные заменены");
@@ -169,8 +162,7 @@ public class MenuManager {
                 default:
                     System.out.println("Отмена загрузки");
             }
-        }
-        catch (Exception invalidInput){
+        } catch (Exception invalidInput) {
             scanner.nextLine();
             System.out.println("Некорректный ввод");
 
@@ -233,7 +225,7 @@ public class MenuManager {
         System.out.print("Выберите пункт: ");
     }
 
-    private  void showAskAboutExistingDataMenu(){
+    private void showAskAboutExistingDataMenu() {
         System.out.println("У вас уже есть загруженные данные (" + productList.size() + " записей).");
         System.out.println("1) Заменить текущие данные новыми");
         System.out.println("2) Дописать новые данные к текущим");

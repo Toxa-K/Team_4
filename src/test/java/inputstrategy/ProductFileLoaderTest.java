@@ -1,4 +1,4 @@
-package InputStrategy;
+package inputstrategy;
 
 import org.inputstrategy.ProductFileLoader;
 import org.junit.jupiter.api.*;
@@ -6,11 +6,11 @@ import org.project.Product;
 
 import java.util.*;
 import java.io.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductFileLoaderTest {
     private final String testFile = "src/test/resources/test_pfl.txt";
-    private final Scanner scanner = new Scanner(System.in);
 
     @BeforeEach
     void setUp() throws IOException {
@@ -31,37 +31,37 @@ class ProductFileLoaderTest {
     }
 
     @Test
-    void testLoadCorrectProducts () throws IOException {
+    void testLoadCorrectProducts() {
         Scanner fakeInput = new Scanner("");
-        ProductFileLoader loader = new ProductFileLoader(testFile,2,fakeInput);
+        ProductFileLoader loader = new ProductFileLoader(testFile, 2, fakeInput);
 
         List<Product> products = loader.loadFromFile(testFile, 2);
 
         assertEquals(2, products.size());
         Product lemon = products.get(0);
-        assertEquals("lemon",lemon.getName());
-        assertEquals(4.5,lemon.getPrice());
-        assertEquals(40,lemon.getQuantity());
+        assertEquals("lemon", lemon.getName());
+        assertEquals(4.5, lemon.getPrice());
+        assertEquals(40, lemon.getQuantity());
     }
 
     @Test
-    void testSaveIncorrectLine () throws IOException {
+    void testSaveIncorrectLine() {
         Scanner fakeInput = new Scanner("да\n");
-        ProductFileLoader loader = new ProductFileLoader(testFile,4,fakeInput);
+        ProductFileLoader loader = new ProductFileLoader(testFile, 4, fakeInput);
 
         List<Product> products = loader.loadFromFile(testFile, 4);
 
-        assertEquals(4,products.size());
+        assertEquals(4, products.size());
         Product milk = products.get(3);
-        assertEquals("milk",milk.getName());
-        assertEquals(0.0,milk.getPrice());
-        assertEquals(3,milk.getQuantity());
+        assertEquals("milk", milk.getName());
+        assertEquals(0.0, milk.getPrice());
+        assertEquals(3, milk.getQuantity());
     }
 
     @Test
     void testSkipIncorrectLine() {
         Scanner fakeInput = new Scanner("нет\nнет\nнет\nнет\n");
-        ProductFileLoader loader = new ProductFileLoader(testFile,7,fakeInput);
+        ProductFileLoader loader = new ProductFileLoader(testFile, 7, fakeInput);
 
         List<Product> products = loader.loadFromFile(testFile, 7);
 
@@ -69,12 +69,12 @@ class ProductFileLoaderTest {
     }
 
     @Test
-    void testEmptyFile () throws IOException {
+    void testEmptyFile() throws IOException {
         String emptyFile = "src/test/resources/empty.txt";
         new PrintWriter(emptyFile).close();
 
         Scanner fakeInput = new Scanner("");
-        ProductFileLoader loader = new ProductFileLoader(emptyFile,10,fakeInput);
+        ProductFileLoader loader = new ProductFileLoader(emptyFile, 10, fakeInput);
 
         List<Product> products = loader.loadFromFile(emptyFile, 10);
 
@@ -84,9 +84,9 @@ class ProductFileLoaderTest {
     }
 
     @Test
-    void testFileNotFound () throws IOException {
+    void testFileNotFound() {
         Scanner fakeInput = new Scanner("");
-        ProductFileLoader loader = new ProductFileLoader("nyahaha.txt",10,fakeInput);
+        ProductFileLoader loader = new ProductFileLoader("nyahaha.txt", 10, fakeInput);
 
         List<Product> products = loader.loadFromFile("nyahaha.txt", 10);
 

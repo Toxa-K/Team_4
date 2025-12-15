@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ManualInputStrategy implements InputStrategy{
+public class ManualInputStrategy implements InputStrategy {
     private final Scanner scanner;
 
     public ManualInputStrategy(Scanner scanner) {
@@ -15,25 +15,67 @@ public class ManualInputStrategy implements InputStrategy{
 
     @Override
     public List<Product> load() {
-        List<Product> productsList = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
 
         System.out.println("Сколько записей хотите добавить? : ");
-        int count = scanner.nextInt();
-        scanner.nextLine();
+        String input;
+        int count = 0;
+        while (true) {
+            input = scanner.nextLine();
 
-        for(int index = 0; index < count; index++)
-        {
-            System.out.println("Запись: " + (index+1));
+            try {
+                count = Integer.parseInt(input);
+                if (count < 0) {
+                    System.out.println("Количество записей не может быть отрицательным! Попробуйте снова: ");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Некорректный ввод! Вам нужно ввести количество записей, которые хотите добавить: ");
+            }
+        }
+
+        for (int index = 0; index < count; index++) {
+            System.out.println("Запись: " + (index + 1));
             System.out.print("Введите имя продукта: ");
             String name = scanner.nextLine();
 
             System.out.print("Введите цену: ");
-            double price = scanner.nextDouble();
-            scanner.nextLine();
+            String priceToDouble;
+            double price = 0.0;
+            while (true) {
+                priceToDouble = scanner.nextLine();
+
+                try {
+                    price = Double.parseDouble(priceToDouble);
+                    if (price < 0) {
+                        System.out.println("Цена не может быть отрицательной! Попробуйте снова: ");
+                        continue;
+                    }
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Некорректный ввод! Вам нужно ввести цену: ");
+                }
+            }
+
 
             System.out.print("Введите количество: ");
-            int quantity = scanner.nextInt();
-            scanner.nextLine();
+            String quantityToDouble;
+            int quantity = 0;
+            while (true) {
+                quantityToDouble = scanner.nextLine();
+
+                try {
+                    quantity = Integer.parseInt(quantityToDouble);
+                    if (quantity < 0) {
+                        System.out.println("Количество не может быть отрицательным! Попробуйте снова: ");
+                        continue;
+                    }
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Некорректный ввод! Вам нужно ввести количество: ");
+                }
+            }
 
             Product product = new Product.ProductBuilder()
                     .setName(name)
@@ -41,8 +83,9 @@ public class ManualInputStrategy implements InputStrategy{
                     .setQuantity(quantity)
                     .build();
 
-            productsList.add(product);
+            products.add(product);
         }
-        return productsList;
+
+        return products;
     }
 }

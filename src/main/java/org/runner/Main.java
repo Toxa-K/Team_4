@@ -1,10 +1,9 @@
-package org.example;
+package org.runner;
 
 import org.project.MenuManager;
 
 public class Main {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         MenuManager menuManager = new MenuManager();
         menuManager.start();
     }

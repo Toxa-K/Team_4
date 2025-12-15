@@ -45,7 +45,7 @@ public class Product {
             if (price < 0) {
                 throw new IllegalArgumentException("Цена не может быть отрицательной");
             }
-            this.price = price;
+            this.price = Math.round(price * 100.0) / 100.0;
             return this;
         }
 
@@ -58,6 +58,9 @@ public class Product {
         }
 
         public Product build() {
+            if (name == null || name.trim().isEmpty()) {
+                throw new IllegalArgumentException("Наименование не может быть пустым");
+            }
             return new Product(this);
         }
     }
