@@ -20,7 +20,8 @@ public class ThreadCounter implements CountStrategy {
         this.threadCount = Runtime.getRuntime().availableProcessors();
         this.minSizeForMultiThreading = 1;
     }
-    private int calculateThreadCount(int size){
+
+    private int calculateThreadCount(int size) {
         return Math.min(threadCount, size);
     }
 
@@ -29,13 +30,10 @@ public class ThreadCounter implements CountStrategy {
         if (products == null || products.isEmpty() || target == null) {
             return 0;
         }
-
-        // Если данных мало, используем однопоточный подсчет
         if (products.size() <= minSizeForMultiThreading) {
             System.out.println("Используется однопоточный режим (мало данных)");
             return singleThreadCount(products, target);
         }
-
         System.out.printf("Используется многопоточный режим (%d потоков)%n", calculateThreadCount(products.size()));
         return multiThreadCount(products, target);
     }
@@ -50,32 +48,27 @@ public class ThreadCounter implements CountStrategy {
         return count;
     }
 
+
     private int multiThreadCount(List<Product> products, Product target) {
         int optimalThreads = calculateThreadCount(products.size());
         ExecutorService executor = Executors.newFixedThreadPool(optimalThreads);
         List<Future<Integer>> futures = new ArrayList<>();
-
         int chunkSize = products.size() / optimalThreads;
         int remaining = products.size() % optimalThreads;
-
         int startIndex = 0;
         for (int i = 0; i < optimalThreads; i++) {
             int endIndex = startIndex + chunkSize + (i < remaining ? 1 : 0);
             if (endIndex > products.size()) {
                 endIndex = products.size();
             }
-
             if (startIndex >= endIndex) {
                 break;
             }
-
             List<Product> chunk = products.subList(startIndex, endIndex);
             CountingTask task = new CountingTask(chunk, target, comparator);
             futures.add(executor.submit(task));
-
             startIndex = endIndex;
         }
-
         int totalCount = 0;
         for (Future<Integer> future : futures) {
             try {
@@ -84,13 +77,11 @@ public class ThreadCounter implements CountStrategy {
                 System.err.println("Ошибка при выполнении потока: " + e.getMessage());
             }
         }
-
         executor.shutdown();
         return totalCount;
     }
 
 
-    // Внутренний класс для задачи подсчета
     private static class CountingTask implements Callable<Integer> {
         private final List<Product> products;
         private final Product target;
@@ -101,6 +92,7 @@ public class ThreadCounter implements CountStrategy {
             this.target = target;
             this.comparator = comparator;
         }
+
 
         @Override
         public Integer call() {

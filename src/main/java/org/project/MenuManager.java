@@ -30,7 +30,7 @@ public class MenuManager {
         boolean isRunning = true;
         while (isRunning) {
             showMainMenu();
-            int choice = getValidateChoice(1,6);
+            int choice = getValidateChoice(1, 6);
 
             switch (choice) {
                 case 1:
@@ -141,8 +141,6 @@ public class MenuManager {
                 System.out.println("Некорректный ввод! Вам нужно ввести количество: ");
             }
         }
-
-
         return new Product.ProductBuilder()
                 .setName(name)
                 .setPrice(price)
@@ -156,7 +154,7 @@ public class MenuManager {
             return;
         }
         showSortingMenu();
-        int choice = getValidateChoice(1,3);
+        int choice = getValidateChoice(1, 3);
         SortContext context = new SortContext();
         Product[] array = productList.toArray(new Product[0]);
         switch (choice) {
@@ -186,7 +184,7 @@ public class MenuManager {
 
     private void loadDataMenu() {
         showLoadDataMenu();
-        int choice = getValidateChoice(1,4);
+        int choice = getValidateChoice(1, 4);
 
         switch (choice) {
             case 1:
@@ -242,7 +240,7 @@ public class MenuManager {
         int mergeChoice;
 
         try {
-            mergeChoice = getValidateChoice(1,2);
+            mergeChoice = getValidateChoice(1, 2);
             switch (mergeChoice) {
                 case 1:
                     productList = generatedProductList;
@@ -327,7 +325,7 @@ public class MenuManager {
         System.out.print("Выберите пункт: ");
     }
 
-    private int getValidateChoice(int min, int max){
+    private int getValidateChoice(int min, int max) {
         int choice = -1;
         boolean isValid = false;
 
