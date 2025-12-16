@@ -1,6 +1,8 @@
 package org.project;
 
-import org.inputstrategy.InputStrategy;
+import org.counterstartegy.CountStrategy;
+import org.counterstartegy.CounterContext;
+import org.counterstartegy.ThreadCounter;
 import org.inputstrategy.ManualInputStrategy;
 import org.inputstrategy.ProductFileLoader;
 import org.inputstrategy.RandomInputStrategy;
@@ -28,8 +30,7 @@ public class MenuManager {
         boolean isRunning = true;
         while (isRunning) {
             showMainMenu();
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = getValidateChoice(1,6);
 
             switch (choice) {
                 case 1:
@@ -37,7 +38,7 @@ public class MenuManager {
                     loadDataMenu();
                     break;
                 case 2:
-                    System.out.println("В разработке" + "Сортровка данных");
+                    System.out.println("Сортровка данных");
                     sortingMenu();
                     break;
                 case 3:
@@ -49,6 +50,10 @@ public class MenuManager {
                     fileWriterDataMenu();
                     break;
                 case 5:
+                    System.out.println("Подсчет вхождений элемента");
+                    countOccurrencesMenu();
+                    break;
+                case 6:
                     isRunning = false;
                     System.out.println("Выход...");
                     break;
@@ -58,10 +63,100 @@ public class MenuManager {
         }
     }
 
+    private void countOccurrencesMenu() {
+        if (productList == null || productList.isEmpty()) {
+            System.out.println("Нет данных для подсчета. Сначала загрузите данные.");
+            return;
+        }
+        System.out.println("\nПодсчет количества вхождений");
+        System.out.println("Всего продуктов: " + productList.size());
+
+        if (!productList.isEmpty()) {
+            System.out.println("\nПримеры продуктов в коллекции:");
+            for (int i = 0; i < Math.min(3, productList.size()); i++) {
+                System.out.println((i + 1) + ". " + productList.get(i));
+            }
+        }
+
+        System.out.println("\nВведите данные для поиска");
+        Product targetProduct = inputProductForSearch();
+
+        if (targetProduct == null) {
+            System.out.println("Не удалось создать продукт для поиска.");
+            return;
+        }
+        CounterContext context = new CounterContext();
+        CountStrategy strategy = new ThreadCounter();
+        context.setStrategy(strategy);
+        int result = context.execute(productList, targetProduct);
+        System.out.println("Итог: найдено " + result + " совпадений ");
+    }
+
+    private Product inputProductForSearch() {
+        String name;
+        double price;
+        int quantity;
+        System.out.print("Введите имя продукта: ");
+        while (true) {
+            name = scanner.nextLine().trim();
+
+            if (name.isEmpty()) {
+                System.out.print("Имя не может быть пустым! Введите имя продукта: ");
+            } else {
+                break;
+            }
+        }
+
+        System.out.print("Введите цену: ");
+        String priceToDouble;
+        while (true) {
+            priceToDouble = scanner.nextLine();
+
+            try {
+                price = Double.parseDouble(priceToDouble);
+                if (price < 0) {
+                    System.out.println("Цена не может быть отрицательной! Попробуйте снова: ");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Некорректный ввод! Вам нужно ввести цену: ");
+            }
+        }
+
+
+        System.out.print("Введите количество: ");
+        String quantityToDouble;
+        while (true) {
+            quantityToDouble = scanner.nextLine();
+
+            try {
+                quantity = Integer.parseInt(quantityToDouble);
+                if (quantity < 0) {
+                    System.out.println("Количество не может быть отрицательным! Попробуйте снова: ");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Некорректный ввод! Вам нужно ввести количество: ");
+            }
+        }
+
+
+        return new Product.ProductBuilder()
+                .setName(name)
+                .setPrice(price)
+                .setQuantity(quantity)
+                .build();
+    }
+
     private void sortingMenu() {
+        if (productList == null || productList.isEmpty()) {
+            System.out.println("Нет данных для сортировки. Сначала загрузите данные.");
+            return;
+        }
         showSortingMenu();
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        int choice = getValidateChoice(1,3);
         SortContext context = new SortContext();
         Product[] array = productList.toArray(new Product[0]);
         switch (choice) {
@@ -91,8 +186,7 @@ public class MenuManager {
 
     private void loadDataMenu() {
         showLoadDataMenu();
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        int choice = getValidateChoice(1,4);
 
         switch (choice) {
             case 1:
@@ -148,8 +242,7 @@ public class MenuManager {
         int mergeChoice;
 
         try {
-            mergeChoice = scanner.nextInt();
-            scanner.nextLine();
+            mergeChoice = getValidateChoice(1,2);
             switch (mergeChoice) {
                 case 1:
                     productList = generatedProductList;
@@ -212,7 +305,8 @@ public class MenuManager {
         System.out.println("2. Отсортированть данные");
         System.out.println("3. Вывести данные в консоль");
         System.out.println("4. Записать данные в файл");
-        System.out.println("5. Выход");
+        System.out.println("5. Подсчет вхождений элемента");
+        System.out.println("6. Выход");
         System.out.print("Выберите пункт: ");
     }
 
@@ -232,4 +326,28 @@ public class MenuManager {
         System.out.println("3) Отмена");
         System.out.print("Выберите пункт: ");
     }
+
+    private int getValidateChoice(int min, int max){
+        int choice = -1;
+        boolean isValid = false;
+
+        while (!isValid) {
+            String input = scanner.nextLine();
+
+            try {
+                choice = Integer.parseInt(input);
+
+                if (choice >= min && choice <= max) {
+                    isValid = true;
+                } else {
+                    System.out.printf("Ошибка: число должно быть в диапазоне от %d до %d.\n", min, max);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите целое число, а не текст.");
+            }
+        }
+
+        return choice;
+    }
+
 }
