@@ -6,6 +6,9 @@ public class SortContext {
     private SortStrategy strategy;
 
     public void setStrategy(SortStrategy strategy) {
+        if (strategy == null) {
+            throw new IllegalStateException("Стратегия не установлена");
+        }
         this.strategy = strategy;
     }
 
