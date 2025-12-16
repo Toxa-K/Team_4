@@ -151,7 +151,7 @@ public class MenuManager {
             return;
         }
         showSortingMenu();
-        int choice = getValidateChoice(1, 3);
+        int choice = getValidateChoice(1, 4);
 
         SortContext context = new SortContext();
         Product[] array = productCollection.toList().toArray(new Product[0]); // берём данные из ProductCollection
@@ -168,6 +168,8 @@ public class MenuManager {
                 System.out.println("Shell Sort");
                 context.setStrategy(new ShellSort());
                 break;
+            case 4:
+                return;
             default:
                 System.out.println("Неверный ввод. Выберите один из предложенных выриантов.");
                 break;
@@ -285,8 +287,7 @@ public class MenuManager {
         System.out.println("1. Bubble sort");
         System.out.println("2. Selection Sort");
         System.out.println("3. Shell Sort");
-        System.out.println("4. Базовая сортировка");
-        System.out.println("5. Выход");
+        System.out.println("4. Назад");
         System.out.print("Выберите пункт: ");
     }
 
