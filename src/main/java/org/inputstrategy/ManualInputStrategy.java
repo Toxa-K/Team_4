@@ -38,7 +38,15 @@ public class ManualInputStrategy implements InputStrategy {
         for (int index = 0; index < count; index++) {
             System.out.println("Запись: " + (index + 1));
             System.out.print("Введите имя продукта: ");
-            String name = scanner.nextLine();
+            String name;
+            while (true) {
+                name = scanner.nextLine();
+                if (name.isEmpty() || name.isBlank() || name.equalsIgnoreCase("null")) {
+                    System.out.println("Наименование не может быть пустым! Введите имя: ");
+                    continue;
+                }
+                break;
+            }
 
             System.out.print("Введите цену: ");
             String priceToDouble;
