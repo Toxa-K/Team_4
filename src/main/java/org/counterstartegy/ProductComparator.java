@@ -16,9 +16,6 @@ public class ProductComparator {
             return false;
         }
 
-        if (product.getQuantity() != target.getQuantity()) {
-            return false;
-        }
-        return true;
+        return product.getQuantity() == target.getQuantity();
     }
 }
