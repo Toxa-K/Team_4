@@ -12,18 +12,15 @@ import org.sortstrategy.SelectionSort;
 import org.sortstrategy.ShellSort;
 import org.sortstrategy.SortContext;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class MenuManager {
     private final Scanner scanner;
-    private List<Product> productList;
+    private final ProductCollection productCollection;
 
     public MenuManager() {
         this.scanner = new Scanner(System.in);
-        this.productList = new ArrayList<>();
+        this.productCollection = new ProductCollection();
     }
 
     public void start() {
@@ -64,17 +61,17 @@ public class MenuManager {
     }
 
     private void countOccurrencesMenu() {
-        if (productList == null || productList.isEmpty()) {
+        if (productCollection.isEmpty()) {
             System.out.println("Нет данных для подсчета. Сначала загрузите данные.");
             return;
         }
         System.out.println("\nПодсчет количества вхождений");
-        System.out.println("Всего продуктов: " + productList.size());
+        System.out.println("Всего продуктов: " + productCollection.size());
 
-        if (!productList.isEmpty()) {
+        if (!productCollection.isEmpty()) {
             System.out.println("\nПримеры продуктов в коллекции:");
-            for (int i = 0; i < Math.min(3, productList.size()); i++) {
-                System.out.println((i + 1) + ". " + productList.get(i));
+            for (int i = 0; i < Math.min(3, productCollection.size()); i++) {
+                System.out.println((i + 1) + ". " + productCollection.get(i));
             }
         }
 
@@ -88,7 +85,7 @@ public class MenuManager {
         CounterContext context = new CounterContext();
         CountStrategy strategy = new ThreadCounter();
         context.setStrategy(strategy);
-        int result = context.execute(productList, targetProduct);
+        int result = context.execute(productCollection.toList(), targetProduct);
         System.out.println("Итог: найдено " + result + " совпадений ");
     }
 
@@ -149,37 +146,37 @@ public class MenuManager {
     }
 
     private void sortingMenu() {
-        if (productList == null || productList.isEmpty()) {
+        if (productCollection.isEmpty()) {
             System.out.println("Нет данных для сортировки. Сначала загрузите данные.");
             return;
         }
         showSortingMenu();
         int choice = getValidateChoice(1, 3);
+
         SortContext context = new SortContext();
-        Product[] array = productList.toArray(new Product[0]);
+        Product[] array = productCollection.toList().toArray(new Product[0]); // берём данные из ProductCollection
         switch (choice) {
             case 1:
                 System.out.println("Bubble sort");
                 context.setStrategy(new BubbleSort());
-                context.execute(array);
-                productList = new ArrayList<>(Arrays.asList(array));
                 break;
             case 2:
                 System.out.println("Selection Sort");
                 context.setStrategy(new SelectionSort());
-                context.execute(array);
-                productList = new ArrayList<>(Arrays.asList(array));
                 break;
             case 3:
                 System.out.println("Shell Sort");
                 context.setStrategy(new ShellSort());
-                context.execute(array);
-                productList = new ArrayList<>(Arrays.asList(array));
                 break;
             default:
                 System.out.println("Неверный ввод. Выберите один из предложенных выриантов.");
                 break;
         }
+        context.execute(array);
+
+        // возвращаем результат обратно в ProductCollection
+        productCollection.clear();
+        productCollection.addAll(Arrays.asList(array));
     }
 
     private void loadDataMenu() {
@@ -189,12 +186,12 @@ public class MenuManager {
         switch (choice) {
             case 1:
                 System.out.println("Cлучайная генерация");
-                List<Product> generatedProductList = new RandomInputStrategy(scanner).load();
+                ProductCollection generatedProductList = new RandomInputStrategy(scanner).load();
                 mergeData(generatedProductList);
                 break;
             case 2:
                 System.out.println("Ввести вручную");
-                List<Product> manualProductList = new ManualInputStrategy(scanner).load();
+                ProductCollection manualProductList = new ManualInputStrategy(scanner).load();
                 mergeData(manualProductList);
                 break;
             case 3:
@@ -208,7 +205,7 @@ public class MenuManager {
                 break;
         }
 
-        if (productList.isEmpty()) {
+        if (productCollection.isEmpty()) {
             System.out.println("Не удалось загрузить данные из файла");
         } else {
             System.out.println("Данные загружены успешно");
@@ -222,20 +219,23 @@ public class MenuManager {
         System.out.println("Введите кол-во загружаемых строк: \nЕсли хотите загрузить весь файл введите 0");
         int numOfLines = scanner.nextInt();
 
-        productList = new ProductFileLoader(fileName, numOfLines).load();
+        ProductCollection loaded = new ProductFileLoader(fileName, numOfLines).load();
+        mergeData(loaded);
     }
 
-    private void mergeData(List<Product> generatedProductList) {
+    private void mergeData(ProductCollection generatedProductList) {
         if (generatedProductList == null || generatedProductList.isEmpty()) {
             System.out.println("Нет новых данных.");
             return;
         }
 
-        if (productList == null || productList.isEmpty()) {
-            productList = generatedProductList;
+        if (productCollection.isEmpty()) {
+            //productCollection = generatedProductList;
+            productCollection.addAll(generatedProductList.toList());
             System.out.println("Заполнили пустой список данными");
             return;
         }
+
         showAskAboutExistingDataMenu();
         int mergeChoice;
 
@@ -243,12 +243,14 @@ public class MenuManager {
             mergeChoice = getValidateChoice(1, 2);
             switch (mergeChoice) {
                 case 1:
-                    productList = generatedProductList;
+                    //productCollection = generatedProductList;
+                    productCollection.clear();
+                    productCollection.addAll(generatedProductList.toList());
                     System.out.println("Текущие данные заменены");
                     break;
                 case 2:
-                    productList.addAll(generatedProductList);
-                    System.out.println("Новые данные добавлены в список. Всего записей " + productList.size());
+                    productCollection.addAll(generatedProductList.toList());
+                    System.out.println("Новые данные добавлены в список. Всего записей " + productCollection.size());
                     break;
                 default:
                     System.out.println("Отмена загрузки");
@@ -261,20 +263,11 @@ public class MenuManager {
     }
 
     private void printData() {
-        if (productList == null || productList.isEmpty()) {
-            System.out.println("Нет данных для отображения. Загрузите данные сначала.");
-            return;
-        }
-        System.out.println("\nИмеющиеся данные");
-        System.out.println("Количество записей: " + productList.size());
-
-        for (int i = 0; i < productList.size(); i++) {
-            System.out.println((i + 1) + ". " + productList.get(i));
-        }
+        productCollection.print();
     }
 
     private void fileWriterDataMenu() {
-        if (productList == null || productList.isEmpty()) {
+        if (productCollection.isEmpty()/*productList == null || productList.isEmpty()*/) {
             System.out.println("Нет данных для записи в файл. Загрузите данные сначала.");
             return;
         }
@@ -283,7 +276,7 @@ public class MenuManager {
         String fileName = scanner.nextLine();
 
         ProductFileWriter writer = new ProductFileWriter();
-        writer.writeToFile(productList, fileName);
+        writer.writeToFile(productCollection.toList()/*productList*/, fileName);
         System.out.println("Данные успешно записаны в файл: " + fileName);
     }
 
@@ -318,7 +311,7 @@ public class MenuManager {
     }
 
     private void showAskAboutExistingDataMenu() {
-        System.out.println("У вас уже есть загруженные данные (" + productList.size() + " записей).");
+        System.out.println("У вас уже есть загруженные данные (" + productCollection.size() + " записей).");
         System.out.println("1) Заменить текущие данные новыми");
         System.out.println("2) Дописать новые данные к текущим");
         System.out.println("3) Отмена");

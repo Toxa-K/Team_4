@@ -1,6 +1,7 @@
 package org.inputstrategy;
 
 import org.project.Product;
+import org.project.ProductCollection;
 
 import java.io.*;
 import java.util.*;
@@ -54,8 +55,8 @@ public class ProductFileLoader implements InputStrategy {
     }
 
     @Override
-    public List<Product> load() {
-        return loadFromFile(fileName, numOfLines);
+    public ProductCollection load() {
+        return new ProductCollection(loadFromFile(fileName, numOfLines));
     }
 
     private Product parseLine(String line, int lineNumber) {
