@@ -1,0 +1,67 @@
+package org.project;
+
+public class Product {
+    private final String name;
+    private final double price;
+    private final int quantity;
+
+    public Product(ProductBuilder builder) {
+        this.name = builder.name;
+        this.price = builder.price;
+        this.quantity = builder.quantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Продукт{" + "наименование=" + name + ", цена=" + price + ", количество=" + quantity + '}';
+    }
+
+    public static class ProductBuilder {
+        private String name;
+        private double price;
+        private int quantity;
+
+        public ProductBuilder setName(String name) {
+            if (name == null || name.trim().isEmpty()) {
+                throw new IllegalArgumentException("Наименование не может быть пустым");
+            }
+            this.name = name;
+            return this;
+        }
+
+        public ProductBuilder setPrice(double price) {
+            if (price < 0) {
+                throw new IllegalArgumentException("Цена не может быть отрицательной");
+            }
+            this.price = Math.round(price * 100.0) / 100.0;
+            return this;
+        }
+
+        public ProductBuilder setQuantity(int quantity) {
+            if (quantity < 0) {
+                throw new IllegalArgumentException("Количество не может быть отрицательным");
+            }
+            this.quantity = quantity;
+            return this;
+        }
+
+        public Product build() {
+            if (name == null || name.trim().isEmpty()) {
+                throw new IllegalArgumentException("Наименование не может быть пустым");
+            }
+            return new Product(this);
+        }
+    }
+}
