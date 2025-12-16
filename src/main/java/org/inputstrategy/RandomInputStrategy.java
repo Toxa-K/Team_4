@@ -4,7 +4,8 @@ import org.project.Product;
 import org.project.ProductCollection;
 import org.project.RandomProductName;
 
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.stream.Stream;
 
 public class RandomInputStrategy implements InputStrategy {
@@ -25,7 +26,6 @@ public class RandomInputStrategy implements InputStrategy {
         Stream.generate(this::generateRandomProduct)
                 .limit(count)
                 .forEach(collectionProduct::add);
-
         return collectionProduct;
     }
 
@@ -44,7 +44,6 @@ public class RandomInputStrategy implements InputStrategy {
             } catch (NumberFormatException e) {
                 System.out.println("Некорректный ввод! Попробуйте снова: ");
             }
-
         }
     }
 
@@ -65,5 +64,4 @@ public class RandomInputStrategy implements InputStrategy {
                 .setQuantity(quantity)
                 .build();
     }
-
 }

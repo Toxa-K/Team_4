@@ -48,7 +48,6 @@ public class ThreadCounter implements CountStrategy {
         return count;
     }
 
-
     private int multiThreadCount(List<Product> products, Product target) {
         int optimalThreads = calculateThreadCount(products.size());
         ExecutorService executor = Executors.newFixedThreadPool(optimalThreads);
@@ -81,7 +80,6 @@ public class ThreadCounter implements CountStrategy {
         return totalCount;
     }
 
-
     private static class CountingTask implements Callable<Integer> {
         private final List<Product> products;
         private final Product target;
@@ -92,7 +90,6 @@ public class ThreadCounter implements CountStrategy {
             this.target = target;
             this.comparator = comparator;
         }
-
 
         @Override
         public Integer call() {

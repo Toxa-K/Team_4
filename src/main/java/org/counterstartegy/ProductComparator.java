@@ -7,15 +7,12 @@ public class ProductComparator {
         if (product == null || target == null) {
             return false;
         }
-
         if (!product.getName().equals(target.getName())) {
             return false;
         }
-
         if (Math.abs(product.getPrice() - target.getPrice()) > 0.001) {
             return false;
         }
-
         return product.getQuantity() == target.getQuantity();
     }
 }

@@ -3,11 +3,14 @@ package org.inputstrategy;
 import org.project.Product;
 import org.project.ProductCollection;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class ProductFileLoader implements InputStrategy {
-
     private final String fileName;
     private final int numOfLines;
     private Scanner scanner;
@@ -103,7 +106,6 @@ public class ProductFileLoader implements InputStrategy {
                 return null;
             }
         }
-
         return new Product.ProductBuilder().setName(name).setPrice(price).setQuantity(quantity).build();
     }
 }

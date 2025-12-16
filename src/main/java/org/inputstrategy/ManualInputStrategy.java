@@ -3,8 +3,6 @@ package org.inputstrategy;
 import org.project.Product;
 import org.project.ProductCollection;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
@@ -37,7 +35,6 @@ public class ManualInputStrategy implements InputStrategy {
             }
         }
 
-
         IntStream.range(0, count)
                 .mapToObj(index -> {
                     System.out.println("Запись: " + (index + 1));
@@ -48,11 +45,10 @@ public class ManualInputStrategy implements InputStrategy {
                             .build();
                 })
                 .forEach(collectionProduct::add);
-
         return collectionProduct;
     }
 
-    private String readName(){
+    private String readName() {
         System.out.print("Введите имя продукта: ");
         String name;
         while (true) {
@@ -64,13 +60,13 @@ public class ManualInputStrategy implements InputStrategy {
             return name;
         }
     }
-    private double readPrice(){
+
+    private double readPrice() {
         System.out.print("Введите цену: ");
         String priceToDouble;
         double price = 0.0;
         while (true) {
             priceToDouble = scanner.nextLine();
-
             try {
                 price = Double.parseDouble(priceToDouble);
                 if (price < 0) {
@@ -83,13 +79,13 @@ public class ManualInputStrategy implements InputStrategy {
             }
         }
     }
-    private int readQuantity(){
+
+    private int readQuantity() {
         System.out.print("Введите количество: ");
         String quantityToDouble;
         int quantity = 0;
         while (true) {
             quantityToDouble = scanner.nextLine();
-
             try {
                 quantity = Integer.parseInt(quantityToDouble);
                 if (quantity < 0) {

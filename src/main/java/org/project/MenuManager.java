@@ -12,7 +12,8 @@ import org.sortstrategy.SelectionSort;
 import org.sortstrategy.ShellSort;
 import org.sortstrategy.SortContext;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class MenuManager {
     private final Scanner scanner;
@@ -154,18 +155,18 @@ public class MenuManager {
         int choice = getValidateChoice(1, 4);
 
         SortContext context = new SortContext();
-        Product[] array = productCollection.toList().toArray(new Product[0]); // берём данные из ProductCollection
+        Product[] array = productCollection.toList().toArray(new Product[0]);
         switch (choice) {
             case 1:
-                System.out.println("Bubble sort");
+                System.out.println("Запуск Bubble sort");
                 context.setStrategy(new BubbleSort());
                 break;
             case 2:
-                System.out.println("Selection Sort");
+                System.out.println("Запуск Selection Sort");
                 context.setStrategy(new SelectionSort());
                 break;
             case 3:
-                System.out.println("Shell Sort");
+                System.out.println("Запуск Shell Sort");
                 context.setStrategy(new ShellSort());
                 break;
             case 4:
@@ -176,7 +177,6 @@ public class MenuManager {
         }
         context.execute(array);
 
-        // возвращаем результат обратно в ProductCollection
         productCollection.clear();
         productCollection.addAll(Arrays.asList(array));
     }
@@ -232,7 +232,6 @@ public class MenuManager {
         }
 
         if (productCollection.isEmpty()) {
-            //productCollection = generatedProductList;
             productCollection.addAll(generatedProductList.toList());
             System.out.println("Заполнили пустой список данными");
             return;
@@ -242,10 +241,9 @@ public class MenuManager {
         int mergeChoice;
 
         try {
-            mergeChoice = getValidateChoice(1, 2);
+            mergeChoice = getValidateChoice(1, 3);
             switch (mergeChoice) {
                 case 1:
-                    //productCollection = generatedProductList;
                     productCollection.clear();
                     productCollection.addAll(generatedProductList.toList());
                     System.out.println("Текущие данные заменены");
@@ -269,7 +267,7 @@ public class MenuManager {
     }
 
     private void fileWriterDataMenu() {
-        if (productCollection.isEmpty()/*productList == null || productList.isEmpty()*/) {
+        if (productCollection.isEmpty()) {
             System.out.println("Нет данных для записи в файл. Загрузите данные сначала.");
             return;
         }
@@ -278,7 +276,7 @@ public class MenuManager {
         String fileName = scanner.nextLine();
 
         ProductFileWriter writer = new ProductFileWriter();
-        writer.writeToFile(productCollection.toList()/*productList*/, fileName);
+        writer.writeToFile(productCollection.toList(), fileName);
         System.out.println("Данные успешно записаны в файл: " + fileName);
     }
 
@@ -338,8 +336,6 @@ public class MenuManager {
                 System.out.println("Ошибка: введите целое число, а не текст.");
             }
         }
-
         return choice;
     }
-
 }
